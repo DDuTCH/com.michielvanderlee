@@ -1,0 +1,93 @@
+apply plugin: 'java'
+apply plugin: 'eclipse'
+
+ext {
+	genDir = file("$buildDir/gensrc")
+	mkdir genDir
+}
+
+configurations{
+	provided
+	
+	openjpac {
+		extendsFrom provided
+		visible false
+	}
+	
+	enhance {
+		extendsFrom provided
+		visible false
+	}
+}
+
+dependencies {
+	compile files( 
+		"$projectDir/libs/openjpa-all-2.3.0.jar",
+		"$projectDir/libs/gson-2.3.jar"
+	)
+	
+	openjpac files( "$projectDir/libs/openjpa-all-2.3.0.jar")
+	
+	enhance files( 
+		"$projectDir/libs/Enhancer.jar", 
+		"$projectDir/libs/bcel-5.2.jar",
+		"$projectDir/libs/gson-2.3.jar"
+	)
+}
+
+sourceSets {
+	main {
+		java {
+			srcDir 'src'
+			srcDir "$buildDir/gensrc"
+		}
+		resources {
+			srcDir('src').include('META-INF/persistence.xml')
+		}
+		compileClasspath += configurations.provided
+	}
+}
+
+compileJava {
+	inputs.files "$projectDir/src/META-INF/persistence.xml"
+	inputs.files fileTree(dir: "$projectDir/src")
+}
+compileJava << {
+	logger.warn 'Enhancing JPA entities ...'
+	def pFile = file("$projectDir/src/META-INF/persistence.xml")
+	if( pFile.exists() ) {
+		ant {
+			taskdef(name:'openjpac', classname:'org.apache.openjpa.ant.PCEnhancerTask', classpath:configurations.openjpac.asPath)
+			openjpac {
+				config (propertiesFile: pFile)
+				classpath {
+					sourceSets.main.java.srcDirs.findAll{ it.exists() }.each { pathelement(location: it) }
+					pathelement(location: sourceSets.main.output.classesDir)
+					pathelement(path: configurations.compile.asPath)
+				}
+			}//openjpac
+		}//ant		
+	}//if
+}
+
+task enhance(type:JavaExec) {
+	logger.warn 'enhancer'
+   	main = "com.michielvanderlee.enhancer.Enhancer"
+   	classpath = configurations.enhance
+	args = [
+		"com.michielvanderlee.jpa.dao.DaoBase", 
+		"$buildDir/classes"
+	].toList()
+}
+
+jar {
+	from ('$projectDir/src') {
+		include 'META-INF/persistence.xml'
+	}
+}
+
+enhance.dependsOn += compileJava
+
+jar.dependsOn += enhance
+
+

@@ -1,0 +1,52 @@
+<entity-mappings xmlns="http://www.apache.org/openjpa/ns/orm/extendable" 
+    xmlns:openjpa="http://www.apache.org/openjpa/ns/orm" 
+    xmlns:orm="http://java.sun.com/xml/ns/persistence/orm" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.apache.org/openjpa/ns/orm/extendable http://openjpa.apache.org/ns/orm/extendable/extendable-orm.xsd
+    					http://www.apache.org/openjpa/ns/orm http://openjpa.apache.org/ns/orm/openjpa-orm.xsd
+    					http://java.sun.com/xml/ns/persistence/orm http://java.sun.com/xml/ns/persistence/orm_2_0.xsd"     
+    version="2.0">
+	
+	<openjpa:openjpa-version version="1.0"/>
+	
+
+	<mapped-superclass class="com.michielvanderlee.jpa.dao.DaoBase" access="PROPERTY">
+	    <attributes>
+			<basic name="name">
+				<orm:column name="name" nullable="false" />
+			</basic>
+			<basic name="description">
+				<orm:column name="description" />
+			</basic>
+			<basic name="createdDateTime">
+				<orm:column name="created" />
+				<orm:temporal>TIMESTAMP</orm:temporal>
+			</basic>
+			<basic name="lastModifiedDateTime">
+				<orm:column name="modified"  />
+				<orm:temporal>TIMESTAMP</orm:temporal>
+			</basic>
+			
+			<version name="version">
+				<orm:column name="version" />
+			</version>
+			
+	    </attributes>
+	</mapped-superclass>
+	
+	<entity class="com.michielvanderlee.jpa.dao.Person" access="PROPERTY">
+		<table name="persons" />
+    
+		<attributes>
+	        <id name="id">
+				<orm:column name="id" />
+				<orm:generated-value strategy="AUTO"/>
+			</id>
+			<basic name="age">
+				<orm:column name="age" />
+			</basic>
+			
+			
+	    </attributes>
+	</entity>
+</entity-mappings>
