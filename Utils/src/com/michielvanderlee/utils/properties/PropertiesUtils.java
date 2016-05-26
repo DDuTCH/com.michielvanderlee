@@ -14,23 +14,27 @@ import com.google.gson.GsonBuilder;
 
 public class PropertiesUtils
 {
-	//////////////////////////////////////////////////////////////////////////////////
-	//	Save methods
-	//////////////////////////////////////////////////////////////////////////////////
+	// ////////////////////////////////////////////////////////////////////////////////
+	// Save methods
+	// ////////////////////////////////////////////////////////////////////////////////
 	public static File saveToFile( Properties props, URI fileUri ) throws IOException
 	{
 		FileOutputStream fileOutput = null;
 		try
 		{
-			File file = new File(fileUri);
-			fileOutput = new FileOutputStream(file);
-			
-			props.store(fileOutput, null);
-			
+			File file = new File( fileUri );
+			fileOutput = new FileOutputStream( file );
+
+			props.store( fileOutput, null );
+
 			return file;
-		} finally 
+		}
+		finally
 		{
-			if(fileOutput != null) { fileOutput.close(); }
+			if ( fileOutput != null )
+			{
+				fileOutput.close();
+			}
 		}
 	}
 
@@ -39,82 +43,99 @@ public class PropertiesUtils
 		FileOutputStream fileOutput = null;
 		try
 		{
-			File file = new File(fileUri);
-			fileOutput = new FileOutputStream(file);
-			
-			props.storeToXML(fileOutput, null);
-			
+			File file = new File( fileUri );
+			fileOutput = new FileOutputStream( file );
+
+			props.storeToXML( fileOutput, null );
+
 			return file;
-		} finally 
+		}
+		finally
 		{
-			if(fileOutput != null) { fileOutput.close(); }
+			if ( fileOutput != null )
+			{
+				fileOutput.close();
+			}
 		}
 	}
-	
+
 	public static File saveToJsonFile( Properties props, URI fileUri, boolean prettyPrint ) throws IOException
-	{		FileWriter writer = null;		try		{			Gson gson = new GsonBuilder().setPrettyPrinting().create();
-			File file = new File(fileUri);			writer = new FileWriter(file);		writer.write(gson.toJson(props));		return file;
-		} finally 
+	{
+		FileWriter writer = null;
+		try
 		{
-			if(writer != null) { writer.close(); }
+			Gson gson = new GsonBuilder().setPrettyPrinting().create();
+			File file = new File( fileUri );
+			writer = new FileWriter( file );
+			writer.write( gson.toJson( props ) );
+			return file;
+		}
+		finally
+		{
+			if ( writer != null )
+			{
+				writer.close();
+			}
 		}
 	}
-	
-	//////////////////////////////////////////////////////////////////////////////////
-	//	Load methods
-	//////////////////////////////////////////////////////////////////////////////////
+
+	// ////////////////////////////////////////////////////////////////////////////////
+	// Load methods
+	// ////////////////////////////////////////////////////////////////////////////////
 	public static Properties loadFromFile( URI fileUri ) throws IOException
 	{
 		FileInputStream fileInput = null;
-		try 
+		try
 		{
-			File file = new File(fileUri);
-			fileInput = new FileInputStream(file);
-			
+			File file = new File( fileUri );
+			fileInput = new FileInputStream( file );
+
 			Properties props = new Properties();
-			props.load(fileInput);
-			
+			props.load( fileInput );
+
 			return props;
-		} finally
+		}
+		finally
 		{
-			if(fileInput != null) {fileInput.close(); }
+			if ( fileInput != null )
+			{
+				fileInput.close();
+			}
 		}
 	}
-	
+
 	public static Properties loadFromXmlFile( URI fileUri ) throws IOException
-	{
-		FileInputStream fileInput = null;
-		try 
+	{		FileInputStream fileInput = null;		try		{			File file = new File( fileUri );			fileInput = new FileInputStream( file );
+
+			Properties props = new Properties();			props.loadFromXML( fileInput );			return props;		}		finally
 		{
-			File file = new File(fileUri);
-			fileInput = new FileInputStream(file);
-			
-			Properties props = new Properties();
-			props.loadFromXML(fileInput);
-			
-			return props;
-		} finally
-		{
-			if(fileInput != null) {fileInput.close(); }
+			if ( fileInput != null )
+			{
+				fileInput.close();
+			}
 		}
 	}
-	
+
 	public static Properties loadFromJsonFile( URI fileUri ) throws IOException
 	{
 		FileReader reader = null;
-		try 
+		try
 		{
 			Gson gson = new Gson();
-			File file = new File(fileUri);
-			reader = new FileReader(file);
-			
-			Properties props = gson.fromJson(reader, Properties.class);
-			
+			File file = new File( fileUri );
+			reader = new FileReader( file );
+
+			Properties props = gson.fromJson( reader, Properties.class );
+
 			return props;
-		} finally
+		}
+		finally
 		{
-			if(reader != null) {reader.close(); }
+			if ( reader != null )
+			{
+				reader.close();
+			}
 		}
 	}
-	
+
 }
