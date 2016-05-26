@@ -52,17 +52,8 @@ public class PropertiesUtils
 	}
 	
 	public static File saveToJsonFile( Properties props, URI fileUri, boolean prettyPrint ) throws IOException
-	{
-		FileWriter writer = null;
-		try
-		{
-			Gson gson = new GsonBuilder().setPrettyPrinting().create();
-			File file = new File(fileUri);
-			writer = new FileWriter(file);
-			
-			writer.write(gson.toJson(props));
-			
-			return file;
+	{		FileWriter writer = null;		try		{			Gson gson = new GsonBuilder().setPrettyPrinting().create();
+			File file = new File(fileUri);			writer = new FileWriter(file);		writer.write(gson.toJson(props));		return file;
 		} finally 
 		{
 			if(writer != null) { writer.close(); }
