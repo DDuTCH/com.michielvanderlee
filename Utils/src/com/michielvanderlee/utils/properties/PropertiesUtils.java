@@ -105,9 +105,18 @@ public class PropertiesUtils
 	}
 
 	public static Properties loadFromXmlFile( URI fileUri ) throws IOException
-	{		FileInputStream fileInput = null;		try		{			File file = new File( fileUri );			fileInput = new FileInputStream( file );
+	{
+		FileInputStream fileInput = null;
+		try
+		{
+			File file = new File( fileUri );
+			fileInput = new FileInputStream( file );
 
-			Properties props = new Properties();			props.loadFromXML( fileInput );			return props;		}		finally
+			Properties props = new Properties();
+			props.loadFromXML( fileInput );
+			return props;
+		}
+		finally
 		{
 			if ( fileInput != null )
 			{
